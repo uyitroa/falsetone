@@ -1,0 +1,3 @@
+mahotas
+pyautogui
+numpy
