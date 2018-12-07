@@ -37,7 +37,7 @@ float calc() {
 			point_row = center_row - abs(center_row - j);
 			color = getint(&img, j, i);
 			sum_color += (color * (point_col + point_row)) / 10000;
-			max_color += (255 * (point_col + point_row)) / 10000;
+			max_color += (200 * (point_col + point_row)) / 1000;
 		}
 		//std::cout << sum_color << "\n";
 	}
@@ -47,17 +47,18 @@ float calc() {
 }
 
 int main() {
-	int MAX_BLUE = 1000;
-	int cur_blue = 1000;
-	uint cur_ambient = 10000000;
-	uint max_ambient = 10000000;
+	int MAX_BLUE = 10000;
+	int cur_blue = 10000;
+	uint cur_ambient = 50000;
+	uint good_ambient = 50000;
 	MyCPPWrapper c;
 	c.init();
 	while (true) {
 		cur_blue = (int)sqrt(MAX_BLUE * calc());
-		std::cout << cur_blue << "\n";
-		cur_ambient = c.getAmbientLight();
-		cur_blue += (int)sqrt(MAX_BLUE * (cur_ambient / max_ambient));
+		cur_ambient = c.getAmbientLight() + 1;
+		if (cur_ambient < good_ambient)
+			cur_blue = (int)cur_blue * good_ambient / cur_ambient;
+		std::cout << "cur_blue: " << cur_blue << " cur_ambient: " << cur_ambient << "\n";
 		std::string command = "./nshift " + std::to_string(cur_blue);
 		system(command.c_str());
 	}
