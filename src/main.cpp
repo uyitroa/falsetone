@@ -25,8 +25,8 @@ float calc() {
 	cv::Mat img = readimage();
 	int center_col = (int)img.cols / 2;
 	int center_row = (int)img.rows / 2;
-	int sum_color = 0;
-	int max_color = 0;
+	uint sum_color = 0;
+	uint max_color = 0;
 
 	uint point_col = 0;
 	uint point_row = 0;
@@ -49,12 +49,15 @@ float calc() {
 int main() {
 	int MAX_BLUE = 1000;
 	int cur_blue = 1000;
+	uint cur_ambient = 10000000;
+	uint max_ambient = 10000000;
 	MyCPPWrapper c;
 	c.init();
 	while (true) {
 		cur_blue = (int)sqrt(MAX_BLUE * calc());
 		std::cout << cur_blue << "\n";
-		std::cout << c.getAmbientLight() << "\n";
+		cur_ambient = c.getAmbientLight();
+		cur_blue += (int)sqrt(MAX_BLUE * (cur_ambient / max_ambient));
 		std::string command = "./nshift " + std::to_string(cur_blue);
 		system(command.c_str());
 	}
