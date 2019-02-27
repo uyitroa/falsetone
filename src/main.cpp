@@ -3,8 +3,6 @@
 #include <math.h>
 #include <opencv2/opencv.hpp>
 
-#include "wrapper/MyCPPWrapper.h"
-
 cv::Mat readimage() {
 	return cv::imread("screenshot.jpg", CV_LOAD_IMAGE_COLOR);
 }
@@ -21,7 +19,7 @@ int getint(cv::Mat *img, int col, int row) {
 	return myint;
 }
 
-float calc() {
+float old_calc() {
 	screenshot();
 	cv::Mat img = readimage();
 	int center_col = (int)img.cols / 2;
@@ -29,8 +27,8 @@ float calc() {
 	uint sum_color = 0;
 	uint max_color = 0;
 
-	uint point_col = 0;
-	uint point_row = 0;
+	uint coefficient_col = 0;
+	uint coefficient_row = 0;
 	uint color = 0;
 
 	int col_begin = img.cols * 0.2;
@@ -52,11 +50,19 @@ float calc() {
 	return (float)sum_color / max_color;
 }
 
+float calc() {
+	screenshot();
+	cv::Mat inImg = readimage();
+	cv::Mat outImg;
+	cv::Size size(1, 1);
+
+	cv::resize(inImg, outImg, size);
+	return (float)getint(&outImg, 0, 0) / 1200;
+}
+
 int main() {
 	int MAX_BLUE = 10000;
 	int cur_blue = 10000;
-	MyCPPWrapper c;
-	c.init();
 	while (true) {
 		cur_blue = (int)sqrt(MAX_BLUE * calc());
 		std::cout << "cur_blue: " << cur_blue << "\n";
