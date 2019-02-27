@@ -6,7 +6,7 @@
 #include "wrapper/MyCPPWrapper.h"
 
 cv::Mat readimage() {
-	return cv::imread("screenshot.jpg");
+	return cv::imread("screenshot.jpg", CV_LOAD_IMAGE_COLOR);
 }
 
 void screenshot() {
@@ -15,7 +15,8 @@ void screenshot() {
 }
 
 int getint(cv::Mat *img, int col, int row) {
-	uchar mychar = img->at<uchar>(col, row);
+	cv::Vec3b intensity = img->at<cv::Vec3b>(col, row);
+	uchar mychar = intensity.val[0];
 	int myint = (int)mychar;
 	return myint;
 }
