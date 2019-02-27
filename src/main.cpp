@@ -26,36 +26,6 @@ int getint(cv::Mat *img, int col, int row) {
 	return myint;
 }
 
-float old_calc() {
-	cv::Mat img = readimage();
-	int center_col = (int)img.cols / 2;
-	int center_row = (int)img.rows / 2;
-	uint sum_color = 0;
-	uint max_color = 0;
-
-	uint coefficient_col = 0;
-	uint coefficient_row = 0;
-	uint color = 0;
-
-	int col_begin = img.cols * 0.2;
-	int col_end = img.cols * 0.8;
-	int row_begin = img.rows * 0.2;
-	int row_end = img.rows * 0.8;
-	for (int i = col_begin; i < col_end; i++) {
-		for (int j = row_begin; j < row_end; j++) {
-			coefficient_col = center_col - abs(center_col - i);
-			coefficient_row = center_row - abs(center_row - j);
-			color = getint(&img, j, i);
-			sum_color += (color * (coefficient_col + coefficient_row)) / 10000;
-			max_color += (200 * (coefficient_col + coefficient_row)) / 1000;
-		}
-		//std::cout << sum_color << "\n";
-	}
-	//std::cout << sum_color << " " << max_color << "\n";
-	//std::cout << (float)sum_color / max_color << "\n";
-	return (float)sum_color / max_color;
-}
-
 float calc() {
 	cv::Mat inImg = readimage();
 	cv::Mat outImg;
