@@ -49,16 +49,11 @@ float calc() {
 int main() {
 	int MAX_BLUE = 10000;
 	int cur_blue = 10000;
-	uint cur_ambient = 50000;
-	uint good_ambient = 50000;
 	MyCPPWrapper c;
 	c.init();
 	while (true) {
 		cur_blue = (int)sqrt(MAX_BLUE * calc());
-		cur_ambient = c.getAmbientLight() + 1;
-		if (cur_ambient < good_ambient)
-			cur_blue = (int)cur_blue * good_ambient / cur_ambient;
-		std::cout << "cur_blue: " << cur_blue << " cur_ambient: " << cur_ambient << "\n";
+		std::cout << "cur_blue: " << cur_blue << "\n";
 		std::string command = "./nshift " + std::to_string(cur_blue);
 		system(command.c_str());
 	}
