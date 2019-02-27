@@ -7,8 +7,15 @@ cv::Mat readimage() {
 	return cv::imread("screenshot.jpg", CV_LOAD_IMAGE_COLOR);
 }
 
-void screenshot() {
-	std::string command = "screencapture -t jpg -x screenshot.jpg";
+void screenshot(int x, int y, int w, int h) {
+	std::string command = "screencapture -t jpg -x screenshot.jpg -R ";
+	command += std::to_string(x); 
+	command += ","; 
+	command += std::to_string(y);
+	command += ",";
+	command += std::to_string(w);
+	command += ",";
+	command += std::to_string(h);
 	system(command.c_str());
 }
 
@@ -20,7 +27,6 @@ int getint(cv::Mat *img, int col, int row) {
 }
 
 float old_calc() {
-	screenshot();
 	cv::Mat img = readimage();
 	int center_col = (int)img.cols / 2;
 	int center_row = (int)img.rows / 2;
@@ -51,7 +57,6 @@ float old_calc() {
 }
 
 float calc() {
-	screenshot();
 	cv::Mat inImg = readimage();
 	cv::Mat outImg;
 	cv::Size size(1, 1);
@@ -60,10 +65,22 @@ float calc() {
 	return (float)getint(&outImg, 0, 0) / 1200;
 }
 
+void getscreenres(int &width, int &height) {
+	std::string command = "screencapture -t jpg -x screenshot.jpg";
+	system(command.c_str());
+	cv::Mat img = readimage();
+	height = img.rows;
+	width = img.cols;
+}
+
 int main() {
 	int MAX_BLUE = 10000;
 	int cur_blue = 10000;
+
+	int width, height = 0;
+	getscreenres(width, height);
 	while (true) {
+		screenshot(width * 0.2, height * 0.2, width * 0.6, height * 0.6);
 		cur_blue = (int)sqrt(MAX_BLUE * calc());
 		std::cout << "cur_blue: " << cur_blue << "\n";
 		std::string command = "./nshift " + std::to_string(cur_blue);
