@@ -39,8 +39,8 @@ void getscreenres(int &width, int &height) {
 	std::string command = "screencapture -t jpg -x screenshot.jpg";
 	system(command.c_str());
 	cv::Mat img = readimage();
-	height = img.rows;
 	width = img.cols;
+	height = img.rows;
 }
 
 int main() {
