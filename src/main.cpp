@@ -45,7 +45,7 @@ void getscreenres(int &width, int &height) {
 
 int main() {
 	int MAX_BLUE = 10000;
-	int cur_blue = 10000;
+	int cur_blue;
 
 	int width, height = 0;
 	getscreenres(width, height);
